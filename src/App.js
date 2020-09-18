@@ -27,7 +27,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      isAuthenticated: false
+      isAuthenticated: true
      }
   }
   
@@ -51,7 +51,7 @@ class App extends Component {
       <Router>
         <Layout className="layout">
           <Navbar />
-          <Content style={{ padding: '25px 50px' }}>
+          <Content style={{ padding: '25px 15px' }}>
             <div className="site-layout-content">
                 <div>
                   <Switch>

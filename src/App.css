@@ -54,7 +54,7 @@
 .site-layout-content {
   background: #fff;
   color: #333;
-  padding: 24px;
+  padding: 10px;
   /* min-height: 280px; */
   /* height: 100%; */
 }
@@ -75,4 +75,11 @@
   height: 31px;
   margin: 0;
   float: right;
+}
+
+.editorWrapper {
+  border: 1px solid #dadada;
+}
+.editorClass {
+  padding: 5px;
 }
