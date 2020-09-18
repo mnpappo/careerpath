@@ -2,22 +2,38 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
-
 import { Link } from "react-router-dom";
-
 import { GoogleOutlined } from '@ant-design/icons';
-
 import { Layout, Menu, Breadcrumb, Space } from 'antd';
-const { Header, Content, Footer } = Layout;
+import  { firebase }  from './../../firebase/config'
+// import { signInWithEmailAndPassword } from './../../services/firebase.service'
 
+const { Header, Content, Footer } = Layout;
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {  }
     }
-    onFinish = values => {
+    onFinish = (values) => {
         console.log('Received values of form: ', values);
+       
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(values.username, values.password)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
+
+    // isDisableButton = data => {
+    //     if(data.username.trim().length> 3 && data.check_textInputChange == true){
+    //         return false;
+    //     } else return true;
+    // }
+
 
     render() { 
         return ( 
@@ -56,7 +72,7 @@ class Login extends Component {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button" block>
+                            <Button type="primary" htmlType="submit" className="login-form-button" block >
                                 Log in
                             </Button>
                             <Space size="large" direction="horizontal" />

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined , MailOutlined} from '@ant-design/icons';
 import { Card } from 'antd';
-
+import  { firebase }  from './../../firebase/config'
 import { Link } from "react-router-dom";
 
 import { Layout, Menu, Breadcrumb } from 'antd';
@@ -14,8 +14,38 @@ class SignUp extends Component {
         this.state = {  }
     }
     onFinish = values => {
-        console.log('Received values of form: ', values);
+        if (values.password !== values.confirmPassword) {
+            alert("Passwords don't match.")
+            return
+        }
+        
+        firebase.auth()
+        .createUserWithEmailAndPassword(values.email, values.password)
+        .then((response) => {
+                const uid = response.user.uid
+                const newdata = {
+                    id: uid,
+                    email: values.email,
+                    fullName: values.username,
+                    role: 'user'
+                };
+                // alert(uid);
+                const usersRef = firebase.firestore().collection('users');
+                usersRef
+                   .doc(uid)
+                   .set(newdata)
+                   .then(() => {
+                    //    navigation.navigate('MainTabScreen');
+                   })
+                   .catch((error) => {
+                       alert(error)
+                   });
+            })
+            .catch((error) => {
+                alert(error)
+        });
     }
+
 
     render() { 
         return ( 
@@ -29,10 +59,23 @@ class SignUp extends Component {
                     >
                         <Form.Item
                             name="username"
-                            rules={[{ required: true, message: 'Please input your Username!' }]}
+                            rules={[{ required: true, message: 'Please input your name!' }]}
                         >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Full Name" />
                         </Form.Item>
+
+                        <Form.Item
+                            name="email"
+                            rules={[{ required: true, message: 'Please input your email!' }]}
+                        >
+                            {/* <MailOutlined /> */}
+                            <Input
+                            prefix={<MailOutlined className="site-form-item-icon" />}
+                            type="email"
+                            placeholder="email"
+                            />
+                        </Form.Item>
+
                         <Form.Item
                             name="password"
                             rules={[{ required: true, message: 'Please input your Password!' }]}
@@ -43,21 +86,26 @@ class SignUp extends Component {
                             placeholder="Password"
                             />
                         </Form.Item>
-                        <Form.Item>
-                            <Form.Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Remember me</Checkbox>
-                            </Form.Item>
 
-                            <a className="login-form-forgot" href="">
-                            Forgot password
-                            </a>
+                        <Form.Item
+                            name="confirmPassword"
+                            rules={[{ required: true, message: 'Please input your Password!' }]}
+                        >
+                            <Input
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            type="password"
+                            placeholder="Password"
+                            />
                         </Form.Item>
 
                         <Form.Item>
+                            
                             <Button type="primary" htmlType="submit" className="login-form-button" block>
-                            Log in
+                            Sign Up
                             </Button>
-                            Or <Link to="/signup">SignUp Now</Link>
+                            <div style={{ textAlign: 'center', marginTop: 10 }}>
+                                Or <Link to="/signIn">Sign In</Link>
+                            </div>
                         </Form.Item>
                     </Form>
                 </Card>
