@@ -5,6 +5,7 @@ import { Steps, Button, message } from 'antd';
 import Step1 from '../steps/Step1';
 import Step2 from '../steps/Step2';
 import Step3 from '../steps/Step3';
+import HomeContext from '../../context/homeContext'
 
 import {
     Redirect
@@ -35,7 +36,7 @@ class Home  extends Component {
         this.state = {
             isUserData: false,
             current: 0,
-            isSubmitted: true
+            isSubmitted: false
         };
     }
 
@@ -49,13 +50,35 @@ class Home  extends Component {
         this.setState({ current });
     }
     submit() {
+        
         this.setState( this.isSubmitted = true )
     }
+    userDataFind = () =>{
+        message.success('Processing complete!')
+        this.setState( {...this.state, isUserData: true, isSubmitted: true} )
+    }
+
+    userDataRemove = () => {
+        message.success('Processing sucess remove!')
+        this.setState( {...this.state, isUserData: false, isSubmitted: false} )
+    }
+
+  
     render() { 
+       
         const { current } = this.state;
+        // <HomeContext.Provider>
+
+        
         if(this.state.isSubmitted) {
-            return (<Redirect to="/result" push />)
-        } else {
+            
+            return (
+                <HomeContext.Provider value ={{userDataRemove : this.userDataRemove}}>
+                <Redirect to="/result" push />
+            </HomeContext.Provider>
+            )
+        } 
+        else {
             return (
                 <>
                     <Steps current={current} size="small">
@@ -75,7 +98,7 @@ class Home  extends Component {
                             </Button>
                         )}
                         {current === steps.length - 1 && (
-                            <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                            <Button type="primary" onClick={this.userDataFind}>
                             Done
                             </Button>
                         )}
@@ -89,8 +112,9 @@ class Home  extends Component {
             );
         }
         
-  
+        // </HomeContext.Provider>
     }
 }
  
 export default Home;
+Home.contextType = HomeContext;

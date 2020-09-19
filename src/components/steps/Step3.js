@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
 import { Form, Input, Button, Radio } from 'antd';
-
+import  HomeContext  from './../../context/authContext'
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -17,6 +17,10 @@ class Step3 extends Component {
     }
 
     onFinish = (values) => {
+      debugger;
+      const { userDataFind} = this.context;
+      userDataFind()
+      undefined()
       console.log('Success:', values);
     };
   
@@ -59,3 +63,4 @@ class Step3 extends Component {
 }
  
 export default Step3;
+Step3.contextType = HomeContext;

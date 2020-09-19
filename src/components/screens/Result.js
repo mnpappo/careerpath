@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Tag, Space } from 'antd';
-
+import { Table, Tag, Space, Button, message } from 'antd';
+import  HomeContext  from './../../context/authContext'
 
 const columns = [
     {
@@ -78,8 +78,19 @@ class Result  extends Component {
         super(props);
         this.state = {  }
     }
+    removeUser = () =>{
+      debugger;
+
+      const { userDataRemove} = this.context;
+      console.log(userDataRemove);
+      userDataRemove();
+    }
     render() { 
-        return ( <Table columns={columns} dataSource={data} /> );
+        return ( <>
+             {/* <Button type="primary" size={12} onClick={this.removeUser}> reset</Button> */}
+          <Table columns={columns} dataSource={data} /> 
+        </>
+        );
     }
 }
  
