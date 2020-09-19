@@ -75,7 +75,7 @@ class App extends Component {
             <Router>
                 <Layout className="layout">
                 <Navbar />
-                <Content style={{ padding: '25px 50px' }}>
+                <Content style={{ padding: '25px 25px' }}>
                     <div className="site-layout-content">
                         <div>
                         <Switch>
