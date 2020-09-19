@@ -107,7 +107,6 @@
   margin-top: 1opx;
   display: flex;
   justify-content: center;
-}
 
 .steps-content {
   /* margin-top: 16px; */
@@ -117,8 +116,20 @@
   /* min-height: 200px; */
   text-align: left;
   padding-top: 10px;
-}
-
 .steps-action {
   margin-top: 24px;
+}.nav-user {
+  display: inline-flex;
+}
+.nav-user-details{
+  margin-left: 10px;
+  
+}
+.nav-user-details .user-name{
+ 
+  font-weight: bold;
+}
+
+.nav-user-details .user-email{
+  font-size: 10px;
 }
