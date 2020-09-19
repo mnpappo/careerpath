@@ -1,9 +1,10 @@
+import { findAllByTestId } from '@testing-library/react';
 import React, { Component } from 'react';
 
 class Home  extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { isUserData: false  }
     }
     render() { 
         return (

@@ -83,3 +83,28 @@
 .editorClass {
   padding: 5px;
 }
+
+.rightCenter{
+  display: flex;
+  justify-content: center;
+}
+
+.fullCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+  overflow: hidden;
+  z-index: 10000000000;
+}
+
+.ant-upload-list{
+  margin-top: 1opx;
+  display: flex;
+  justify-content: center;
+}

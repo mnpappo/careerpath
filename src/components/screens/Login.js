@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
 import { Link } from "react-router-dom";
 import { GoogleOutlined } from '@ant-design/icons';
-import { Layout, Menu, Breadcrumb, Space } from 'antd';
+import { Layout,  Space , message} from 'antd';
 import  { firebase }  from './../../firebase/config'
 // import { signInWithEmailAndPassword } from './../../services/firebase.service'
 
@@ -22,10 +22,26 @@ class Login extends Component {
             .signInWithEmailAndPassword(values.username, values.password)
             .then((response) => {
                 console.log(response);
+                message.success(' successfully log in');
             })
             .catch(error => {
                 console.log(error)
+                message.error(error);
             })
+    }
+
+    googleLogin(){
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+        // new  firebase.auth.GoogleAuthProvider()
+        // .then((response) => {
+        //     console.log(response);
+        //     message.success(' successfully log in');
+        // })
+        // .catch(error => {
+        //     console.log(error)
+        //     message.error(error);
+        // })
     }
 
     // isDisableButton = data => {
@@ -82,7 +98,7 @@ class Login extends Component {
                             </div>
 
                             <div style={{ textAlign: 'center', marginTop: 10 }}>
-                                <Button type="primary" icon={<GoogleOutlined />} block>Login with Google</Button>
+                                <Button type="primary" icon={<GoogleOutlined />} block onClick={this.googleLogin}> Login with Google</Button>
                             </div>
                             
                             

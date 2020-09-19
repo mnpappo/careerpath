@@ -1,6 +1,5 @@
 import React, { Component , createContext} from 'react';
 import './App.css';
-import { Button, DatePicker } from 'antd';
 import Navbar from './components/common/Navbar';
 
 import Login from './components/screens/Login';
@@ -72,7 +71,7 @@ class App extends Component {
       )
     }
      return (
-        <AuthContext.Provider value={{userLogOut :this.userLogOut }}>
+        <AuthContext.Provider value={{userLogOut :this.userLogOut , user: this.state.user }}>
             <Router>
                 <Layout className="layout">
                 <Navbar />
@@ -100,7 +99,7 @@ class App extends Component {
                     </div>
         
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
                 </Layout>
             </Router>
       </AuthContext.Provider>
