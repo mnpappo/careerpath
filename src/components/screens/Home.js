@@ -1,33 +1,12 @@
-import { findAllByTestId } from '@testing-library/react';
 import React, { Component } from 'react';
-import { Steps, Button, message } from 'antd';
-
+import { Steps, Button , message } from 'antd';
 import Step1 from '../steps/Step1';
 import Step2 from '../steps/Step2';
 import Step3 from '../steps/Step3';
 import HomeContext from '../../context/homeContext'
-
-import {
-    Redirect
-  } from "react-router-dom";
-
-
+import { scienceGroup, artsGroup, comerceGroup  } from './../../mock/subject'
+import { Redirect } from "react-router-dom";
 const { Step } = Steps;
-
-const steps = [
-  {
-    title: 'Department',
-    content: <Step1 />,
-  },
-  {
-    title: 'SSC',
-    content: <Step2 />,
-  },
-  {
-    title: 'HSC',
-    content: <Step3 />,
-  },
-];
 
 
 class Home  extends Component {
@@ -35,53 +14,99 @@ class Home  extends Component {
         super(props);
         this.state = {
             isUserData: false,
+            data: null,
             current: 0,
+            stepOneData: {Group: "Science",  CGPA: { SSC: 5 , HSC: 5}},
+            stepTwoData: [],
+            stepThreeData: [],
             isSubmitted: false
         };
+        this.child = React.createRef();
     }
 
+    initialStepTwoThreeDefine = (stepOne) => {
+        const group = this.state.stepOneData.Group;
+        // console.log(scienceGroup.SSC);
+
+        switch(group){
+            case "Science":
+                this.setState(this.state.stepTwoData = scienceGroup.SSC );
+                this.setState(this.state.stepThreeData = scienceGroup.HSC);
+                break;
+            case "Arts": 
+                this.setState(this.state.stepTwoData = artsGroup.SSC );
+                this.setState(this.state.stepThreeData = artsGroup.HSC);
+                break;
+            case "Commerce":
+                this.setState(this.state.stepTwoData = comerceGroup.SSC);
+                this.setState( this.state.stepThreeData = comerceGroup.HSC);
+                break;
+               
+        }
+
+        debugger;
+        // console.log(this.state);
+    };
+
     next() {
+      
+        if(this.child.current && this.state.current == 0){
+            this.setState( this.state.stepOneData =  this.child.current.state );
+            this.initialStepTwoThreeDefine(this.child.current.state);
+        }
+    
         const current = this.state.current + 1;
-        this.setState({ current });
+        this.setState({...this.state, current });
+        
     }
 
     prev() {
         const current = this.state.current - 1;
-        this.setState({ current });
+        this.setState({...this.state, current });
     }
     submit() {
         
-        this.setState( this.isSubmitted = true )
+        this.setState({...this.state, isSubmitted: true })
     }
+
     userDataFind = () =>{
         message.success('Processing complete!')
         this.setState( {...this.state, isUserData: true, isSubmitted: true} )
     }
-
-    userDataRemove = () => {
-        message.success('Processing sucess remove!')
-        this.setState( {...this.state, isUserData: false, isSubmitted: false} )
-    }
-
   
     render() { 
-       
+
         const { current } = this.state;
         // <HomeContext.Provider>
-
+        const steps = [
+            {
+              title: 'Department',
+              content: <Step1  ref={this.child} data={this.state.stepOneData}/>,
+            },
+            {
+              title: 'SSC',
+              data: 2,
+              content: <Step2 ref={this.child} data={this.state.stepTwoData}/>,
+            },
+            {
+              title: 'HSC',
+              data: 3,
+              content: <Step3 ref={this.child} data={this.state.stepThreeData}/>,
+            },
+          ];
         
         if(this.state.isSubmitted) {
             
             return (
-                <HomeContext.Provider value ={{userDataRemove : this.userDataRemove}}>
+                <>
                 <Redirect to="/result" push />
-            </HomeContext.Provider>
+                </>
             )
         } 
         else {
             return (
                 <>
-                    <Steps current={current} size="small">
+                    <Steps current={current} size="small" direction="horizontal" >
                         {steps.map(item => (
                             <Step key={item.title} title={item.title} />
                         ))}
@@ -112,7 +137,6 @@ class Home  extends Component {
             );
         }
         
-        // </HomeContext.Provider>
     }
 }
  

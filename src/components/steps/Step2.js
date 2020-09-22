@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import { Form, Input, Button, Radio } from 'antd';
-
+import { Form, InputNumber } from 'antd';
+import * as _ from 'lodash';
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -13,46 +13,49 @@ const tailLayout = {
 class Step2 extends Component {
     constructor(props) {
         super(props);
-        this.state = {   }
+        this.state = { subjects : props.data  }
     }
 
-    onFinish = (values) => {
-      console.log('Success:', values);
+    onFieldsChange = (values) => {
+        if(values.length == 1){
+            console.log('Success:', values);
+        }
+     
     };
   
     onFinishFailed = (errorInfo) => {
       console.log('Failed:', errorInfo);
     };
 
-    render() { 
+    onChangeSSCGrade = (subject) => {
+        debugger;
+        console.log(subject);
+    }
 
+    render() { 
+     
+      const subjects = this.state.subjects;
+      
       return (
         <Row>
-          <Col span={24}>
-          <Form
+            <Col span={24}>
+
+            <Form
               {...layout}
               name="basic"
-              onFinish={this.onFinish}
+              onFieldsChange={this.onFieldsChange}
               onFinishFailed={this.onFinishFailed}
             >
-              <Form.Item label="Bangla" name="bangla">
-                <Input />
-              </Form.Item>
-              <Form.Item label="English" name="english">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Math" name="math">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Higher Math" name="highermath">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Biology" name="biology">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Social Science" name="socialscience">
-                <Input />
-              </Form.Item>
+              {subjects &&
+                subjects.map( (subject, index) => {
+                  return(
+                    // <p key={name}>{name} - {grade}</p>
+                  <Form.Item label={_.startCase(subject.name)}  name={subject.name} key={index} >
+                    <InputNumber size="small" min={0} max={5} defaultValue={subject.grade}  onChange={this.onChangeSSCGrade(subject)} />
+                  </Form.Item>
+                  );
+                })
+              }
             </Form>
           </Col>
         </Row>

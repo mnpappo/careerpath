@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import { Form, Input, Button, Radio } from 'antd';
-import  HomeContext  from './../../context/authContext'
+import { Form, InputNumber } from 'antd';
+import * as _ from 'lodash';
+
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -11,56 +12,54 @@ const tailLayout = {
 };
 
 class Step3 extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {   }
-    }
-
-    onFinish = (values) => {
-      debugger;
-      const { userDataFind} = this.context;
-      userDataFind()
-      undefined()
-      console.log('Success:', values);
-    };
-  
-    onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
-
-    render() { 
-
-      return (
-        <Row>
-          <Col span={24}>
-          <Form
-              {...layout}
-              name="basic"
-              onFinish={this.onFinish}
-              onFinishFailed={this.onFinishFailed}
-            >
-              <Form.Item label="Bangla" name="bangla">
-                <Input />
-              </Form.Item>
-              <Form.Item label="English" name="english">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Math" name="math">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Physics" name="highermath">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Biology" name="biology">
-                <Input />
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
-        
-      );
-    }
+  constructor(props) {
+    super(props);
+    this.state = { subjects : props.data  }
 }
+
+onFieldsChange = (values) => {
+  console.log('Success:', values);
+};
+
+onFinishFailed = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+
+onChangeSSCGrade = (subject) => {
+    debugger;
+    console.log(subject);
+}
+
+render() { 
  
+  const subjects = this.state.subjects;
+  
+  return (
+    <Row>
+        <Col span={24}>
+
+        <Form
+          {...layout}
+          name="basic"
+          onFieldsChange={this.onFieldsChange}
+          onFinishFailed={this.onFinishFailed}
+        >
+          {subjects &&
+            subjects.map( (subject, index) => {
+              return(
+                // <p key={name}>{name} - {grade}</p>
+              <Form.Item label={_.startCase(subject.name)} name={subject.name} key={index} >
+                <InputNumber size="small" min={0} max={5} defaultValue={subject.grade}  onChange={this.onChangeSSCGrade(subject)} />
+              </Form.Item>
+              );
+            })
+          }
+        </Form>
+      </Col>
+    </Row>
+    
+  );
+}
+}
+
 export default Step3;
-Step3.contextType = HomeContext;
